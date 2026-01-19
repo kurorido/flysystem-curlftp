@@ -263,6 +263,11 @@ class CurlFtpAdapter extends AbstractFtpAdapter
             $this->connection->setOption(CURLOPT_FTP_SKIP_PASV_IP, $this->skipPasvIp);
         }
 
+        // Disable EPSV and force traditional PASV mode to avoid issues with malformed EPSV responses
+        if ($this->passive) {
+            $this->connection->setOption(CURLOPT_FTP_USE_EPSV, 0);
+        }
+
         $this->connection->setOption(CURLOPT_SSL_VERIFYHOST, $this->sslVerifyHost);
         $this->connection->setOption(CURLOPT_SSL_VERIFYPEER, $this->sslVerifyPeer);
 
